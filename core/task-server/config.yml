@@ -1,0 +1,9 @@
+broker: amqp://guest:guest@127.0.0.1:5672/
+default_queue: jakob_tasks
+max_worker_instances: 10
+result_backend: redis://127.0.0.1:6379
+amqp:
+  binding_key: jakob_task
+  exchange: jakob_exchange
+  exchange_type: direct
+  prefetch_count: 1

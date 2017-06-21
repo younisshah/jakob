@@ -1,0 +1,21 @@
+package: github.com/younisshah/jakob
+import:
+- package: stathat.com/c/consistent
+- package: gopkg.in/alecthomas/kingpin.v2
+  version: ^2.2.4
+- package: github.com/tidwall/gjson
+- package: golang.org/x/sync
+  subpackages:
+  - errgroup
+- package: gopkg.in/yaml.v2
+- package: github.com/garyburd/redigo
+  version: ^1.1.0
+- package: github.com/iwanbk/gobeanstalk
+  version: ^0.3.0
+- package: github.com/mikespook/gearman-go
+  version: ^0.1.3
+- package: github.com/RichardKnop/machinery
+  subpackages:
+  - v1
+- package: github.com/Shopify/sarama
+  version: ^1.12.0

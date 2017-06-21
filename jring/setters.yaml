@@ -1,0 +1,3 @@
+setters:
+- localhost:9000
+- setter:8999

@@ -1,0 +1,91 @@
+hash: e5ced76a5cb73405bfebc5174cd8fdc2c90c1f8075511e821dd6656343883890
+updated: 2017-06-21T14:38:58.735338147+05:30
+imports:
+- name: github.com/alecthomas/template
+  version: a0175ee3bccc567396460bf5acd36800cb10c49c
+  subpackages:
+  - parse
+- name: github.com/alecthomas/units
+  version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
+- name: github.com/bradfitz/gomemcache
+  version: 1952afaa557dc08e8e0d89eafab110fb501c1a2b
+  subpackages:
+  - memcache
+- name: github.com/davecgh/go-spew
+  version: 346938d642f2ec3594ed81d874461961cd0faa76
+  subpackages:
+  - spew
+- name: github.com/eapache/go-resiliency
+  version: b1fe83b5b03f624450823b751b662259ffc6af70
+  subpackages:
+  - breaker
+- name: github.com/eapache/go-xerial-snappy
+  version: bb955e01b9346ac19dc29eb16586c90ded99a98c
+- name: github.com/eapache/queue
+  version: 44cc805cf13205b55f69e14bcb69867d1ae92f98
+- name: github.com/garyburd/redigo
+  version: 433969511232c397de61b1442f9fd49ec06ae9ba
+  subpackages:
+  - internal
+  - redis
+- name: github.com/golang/snappy
+  version: 553a641470496b2327abcac10b36396bd98e45c9
+- name: github.com/iwanbk/gobeanstalk
+  version: 36dcad26a9619327621b6f95745d462c4b12dcec
+- name: github.com/kelseyhightower/envconfig
+  version: 70f0258d44cbaa3b6a2581d82f58da01a38e4de4
+- name: github.com/mikespook/gearman-go
+  version: 14f4df8ede0150c51852c14fad816d93102d3175
+- name: github.com/pierrec/lz4
+  version: 5a3d2245f97fc249850e7802e3c01fad02a1c316
+- name: github.com/pierrec/xxHash
+  version: 5a004441f897722c627870a981d02b29924215fa
+  subpackages:
+  - xxHash32
+- name: github.com/rcrowley/go-metrics
+  version: 1f30fe9094a513ce4c700b9a54458bbb0c96996c
+- name: github.com/RichardKnop/logging
+  version: 8692ae85bb7c50aadb496ffd6fb58a76300eaab1
+- name: github.com/RichardKnop/machinery
+  version: 18c9573c847e688a94d35ceafad349add6808d45
+  subpackages:
+  - v1
+  - v1/backends
+  - v1/brokers
+  - v1/common
+  - v1/config
+  - v1/log
+  - v1/retry
+  - v1/tasks
+- name: github.com/satori/go.uuid
+  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
+- name: github.com/Shopify/sarama
+  version: c01858abb625b73a3af51d0798e4ad42c8147093
+- name: github.com/streadway/amqp
+  version: afe8eee29a74d213b1f3fb2586058157c397da60
+- name: github.com/tidwall/gjson
+  version: c784c417818f59d6597274642d8ac1d09efc9b01
+- name: golang.org/x/net
+  version: 057a25b06247e0c51ba15d8ae475feb2fcb72164
+  subpackages:
+  - context
+- name: golang.org/x/sync
+  version: f52d1811a62927559de87708c8913c1650ce4f26
+  subpackages:
+  - errgroup
+- name: gopkg.in/alecthomas/kingpin.v2
+  version: 7f0871f2e17818990e4eed73f9b5c2f429501228
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  subpackages:
+  - bson
+  - internal/json
+  - internal/sasl
+  - internal/scram
+- name: gopkg.in/redsync.v1
+  version: 98dabdf1c8574561bf976911c14ff652c47b1ddf
+- name: gopkg.in/yaml.v2
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
+- name: stathat.com/c/consistent
+  version: 748f01b59d1b2218efe39513039e9ee31266d7c7
+testImports: []
