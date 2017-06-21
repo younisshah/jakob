@@ -4,9 +4,9 @@
 package core
 
 import (
-	"bytes"
-	"fmt"
 	"log"
+
+	"os"
 
 	"github.com/younisshah/jakob/core/task-sender"
 	"github.com/younisshah/jakob/network"
@@ -27,6 +27,8 @@ type Command struct {
 	Error        error
 }
 
+var logger = log.New(os.Stderr, "[jakob-cmd] ", log.LstdFlags)
+
 // NewCommand create a new command
 func NewCommand(redisServer string, cmdName string, args ...interface{}) *Command {
 	return &Command{redisAddress: redisServer, name: cmdName, args: args}
@@ -39,7 +41,11 @@ func (c *Command) Execute() {
 		c.Error = err
 		return
 	}
-	defer conn.Close() // ignore err
+	defer func() {
+		if err := conn.Close(); err != nil {
+			logger.Println("couldn't close Redis connection", err)
+		}
+	}()
 	resp, err := conn.Do(c.name, c.args...)
 	c.Error = err
 	c.Result = resp
@@ -49,8 +55,8 @@ func (c *Command) Execute() {
 		}()
 	} else {
 		if c.name != "GET" && c.name != "PING" {
-			log.Printf("[*] Error while producing cmd [%v] to beanstalkd", c.String())
-			log.Println("Err", err)
+			logger.Printf("[*] Error while producing cmd [%v] to machinery", c.String())
+			logger.Println("Err", err)
 		}
 	}
 }
@@ -58,12 +64,12 @@ func (c *Command) Execute() {
 // Stringer interface
 func (c *Command) String() string {
 	if len(c.args) > 0 && c.args[0] != nil {
-		fmt.Println(c.args)
 		return c.name
 	}
 	return c.name
 }
 
+/*
 func unpack(args ...interface{}) string {
 	var buffer bytes.Buffer
 	for _, v := range args {
@@ -71,6 +77,7 @@ func unpack(args ...interface{}) string {
 	}
 	return buffer.String()
 }
+*/
 
 // Pings the give address to check if it's live
 func PING(address string) *Command {

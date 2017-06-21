@@ -31,6 +31,7 @@ func Sync(args ...string) error {
 	return nil
 }
 
+
 func pack(args []string) []interface{} {
 	a := make([]interface{}, len(args))
 	for k, v := range args {

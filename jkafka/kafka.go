@@ -20,18 +20,18 @@ const (
 
 var (
 	hosts  = []string{"localhost:9092"}
-	logger = log.New(os.Stderr, "[jakob-kafka-consumer] ", log.LstdFlags)
+	logger = log.New(os.Stderr, "[jakob-kafka] ", log.LstdFlags)
 )
 
 // Consume consumes from a Kafka topic
+// Use this to sync commands to a new getter peer
 func Consume() error {
 
-	config := sarama.Config{}
-	config.Consumer.Return.Errors = true
-	consumer, err := sarama.NewConsumer(hosts, &config)
+	consumer, err := sarama.NewConsumer(hosts, nil)
 
 	if err != nil {
 		logger.Println("couldn't create Kafka consumer. Hosts are: ", hosts)
+		logger.Println(" -ERROR", err)
 		return err
 	}
 
@@ -65,7 +65,7 @@ func Consume() error {
 			case err := <-partitionConsumer.Errors():
 				logger.Println("error while consuming ", err)
 			case cmd := <-partitionConsumer.Messages():
-				logger.Printf("rcvd >> key: %s, value: %s", string(cmd.Key), string(cmd.Value))
+				logger.Printf("rcvd >> cmd: %s", string(cmd.Value))
 			case <-shutdown:
 				logger.Println("kafka consumer shutdown triggered")
 				done <- true
@@ -73,6 +73,7 @@ func Consume() error {
 		}
 	}()
 	<-done
+	logger.Println("Exit.")
 	return nil
 }
 
@@ -99,7 +100,7 @@ func Produce(cmd string) error {
 		logger.Println(" -ERROR", err)
 		return err
 	}
-	logger.Println("command stored in topic [%s], partition [%d], offest [%d]", _KAFKA_TOPIC, partition, offset)
+	logger.Printf("command stored in topic [%s], partition [%d], offest [%d]\n", _KAFKA_TOPIC, partition, offset)
 	return nil
 }
 
