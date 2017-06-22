@@ -70,6 +70,62 @@ func (j *JYaml) Append() error {
 	return err
 }
 
+// DeleteSetter deletes a setter peer from YAML file
+func (j *JYaml) DeleteSetter(delPeer string) error {
+	j.Type = SETTER
+	file, err := j.open(os.O_WRONLY)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	peers, err := j.Peers()
+	if err != nil {
+		return err
+	}
+	for i := range peers {
+		if peers[i] == delPeer {
+			// remove peer from peers slice
+			peers = append(peers[:i], peers[i+1:]...)
+			break
+		}
+	}
+	yml, err := SetterPeers{}.YAMLString(peers)
+	if err != nil {
+		return err
+	}
+	file.Truncate(0)
+	_, err = file.WriteString(yml)
+	return err
+}
+
+// DeleteGetter deletes a getter peer from YAML file
+func (j *JYaml) DeleteGetter(delPeer string) error {
+	j.Type = GETTER
+	file, err := j.open(os.O_WRONLY)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	peers, err := j.Peers()
+	if err != nil {
+		return err
+	}
+	for i := range peers {
+		if peers[i] == delPeer {
+			// remove peer from peers slice
+			peers = append(peers[:i], peers[i+1:]...)
+			break
+		}
+	}
+	yml, err := GetterPeers{}.YAMLString(peers)
+	if err != nil {
+		return err
+	}
+	file.Truncate(0)
+	_, err = file.WriteString(yml)
+	return err
+}
+
 // Peers returns the array of setter/getter peers
 func (j *JYaml) Peers() ([]string, error) {
 	file, err := j.open(os.O_RDONLY)
