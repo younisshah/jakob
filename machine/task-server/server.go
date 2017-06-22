@@ -3,7 +3,7 @@ package task_server
 import (
 	"github.com/RichardKnop/machinery/v1"
 	"github.com/RichardKnop/machinery/v1/config"
-	"github.com/younisshah/jakob/core/tasks"
+	"github.com/younisshah/jakob/machine/tasks"
 )
 
 /**

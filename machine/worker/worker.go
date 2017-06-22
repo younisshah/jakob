@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/younisshah/jakob/core/task-server"
+	"github.com/younisshah/jakob/machine/task-server"
 )
 
 /**

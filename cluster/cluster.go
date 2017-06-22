@@ -11,8 +11,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/younisshah/jakob/core"
+	"github.com/younisshah/jakob/command"
 	"github.com/younisshah/jakob/jfs"
+	"github.com/younisshah/jakob/jkafka"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -21,6 +22,53 @@ import (
  */
 
 var logger = log.New(os.Stderr, "[jakob-http-server] ", log.LstdFlags)
+
+func Init(writer http.ResponseWriter, req *http.Request) {
+	setter, getter, err := parseBody(writer, req)
+	if err != nil {
+		s := "couldn't read request body:" + err.Error()
+		sendResp(&writer, s)
+		return
+	}
+
+	var group errgroup.Group
+
+	group.Go(func() error {
+		cmd := command.PING(setter)
+		if cmd.Error != nil && "PONG" != cmd.Result.(string) {
+			logger.Printf("setter peer %s is not live\n", setter)
+			return cmd.Error
+		}
+		return nil
+	})
+
+	group.Go(func() error {
+		cmd := command.PING(getter)
+		if cmd.Error != nil && "PONG" != cmd.Result.(string) {
+			logger.Printf("getter peer %s is not live\n", getter)
+			return cmd.Error
+		}
+		return nil
+	})
+
+	if err := group.Wait(); err != nil {
+		s := "couldn't join cluster:" + err.Error()
+		sendResp(&writer, s)
+		return
+	}
+	jyml := jfs.NewJYaml()
+	err = jyml.Init(setter, getter)
+	if err != nil {
+		s := "couldn't join cluster:" + err.Error()
+		sendResp(&writer, s)
+		return
+	}
+
+	logger.Println("joined cluster")
+	logger.Println("getter:", getter)
+	logger.Println("setter:", setter)
+	sendResp(&writer, "OK")
+}
 
 func Join(writer http.ResponseWriter, req *http.Request) {
 
@@ -34,6 +82,12 @@ func Join(writer http.ResponseWriter, req *http.Request) {
 	var group errgroup.Group
 
 	group.Go(func() error {
+		cmd := command.PING(setter)
+		if cmd.Error != nil || "PONG" != cmd.Result.(string) {
+			logger.Printf("setter peer %s is not live\n", setter)
+			return cmd.Error
+		}
+		logger.Printf("setter peer %s is live\n", setter)
 		jyml := jfs.NewJYaml()
 		jyml.Type = jfs.SETTER
 		jyml.Address = setter
@@ -41,26 +95,29 @@ func Join(writer http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			return err
 		}
-		cmd := core.PING(setter)
-		if cmd.Error != nil && "PONG" != cmd.Result.(string) {
-			log.Printf("setter peer %s is not live", setter)
-			return cmd.Error
-		}
 		return nil
 	})
 
 	group.Go(func() error {
+		cmd := command.PING(getter)
+		if cmd.Error != nil || "PONG" != cmd.Result.(string) {
+			logger.Printf("getter peer %s is not live\n", getter)
+			return cmd.Error
+		}
+		logger.Printf("getter peer %s is live\n", getter)
+		logger.Println("log replication started for peer", getter)
+		if err := jkafka.Consume(getter); err != nil {
+			logger.Println("error while log replication")
+			logger.Println(" - ERROR", err)
+			return err
+		}
+		logger.Println("log replication done.")
 		jyml := jfs.NewJYaml()
 		jyml.Type = jfs.GETTER
 		jyml.Address = getter
 		err := jyml.Append()
 		if err != nil {
 			return err
-		}
-		cmd := core.PING(getter)
-		if cmd.Error != nil && "PONG" != cmd.Result.(string) {
-			log.Printf("getter peer %s is not live", getter)
-			return cmd.Error
 		}
 		return nil
 	})

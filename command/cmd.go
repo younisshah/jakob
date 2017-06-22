@@ -1,15 +1,18 @@
 // Package core deal with setting up redis client, parsing incoming T38 commands,
 // executing commands and returning the resp and error and handling joining of new
 // setter + getter peer and beanstalkd services
-package core
+package command
 
 import (
 	"log"
 
 	"os"
 
-	"github.com/younisshah/jakob/core/task-sender"
-	"github.com/younisshah/jakob/network"
+	"bytes"
+
+	"github.com/younisshah/jakob/jkafka"
+	"github.com/younisshah/jakob/machine/task-sender"
+	"github.com/younisshah/jakob/redisd"
 )
 
 /**
@@ -36,7 +39,7 @@ func NewCommand(redisServer string, cmdName string, args ...interface{}) *Comman
 
 // Executes the command
 func (c *Command) Execute() {
-	conn, err := network.GetRedisConn(c.redisAddress)
+	conn, err := redisd.GetRedisConn(c.redisAddress)
 	if err != nil {
 		c.Error = err
 		return
@@ -50,9 +53,15 @@ func (c *Command) Execute() {
 	c.Error = err
 	c.Result = resp
 	if err == nil && (c.name != "GET" && c.name != "PING") {
-		go func() {
-			task_sender.Sender(c.name, c.args)
-		}()
+		cmd := c.String()
+		logger.Println("producing to kafka")
+		logger.Println(" - COMMAND:", cmd)
+		if err := jkafka.Produce(cmd); err != nil {
+			logger.Println("couldn't produce to Kafka")
+			logger.Println(" -ERROR", err)
+			return
+		}
+		task_sender.Send(c.name, c.args)
 	} else {
 		if c.name != "GET" && c.name != "PING" {
 			logger.Printf("[*] Error while producing cmd [%v] to machinery", c.String())
@@ -63,21 +72,16 @@ func (c *Command) Execute() {
 
 // Stringer interface
 func (c *Command) String() string {
-	if len(c.args) > 0 && c.args[0] != nil {
-		return c.name
+	var buffer bytes.Buffer
+	buffer.WriteString(c.name)
+	if len(c.args) > 0 {
+		for i := range c.args {
+			buffer.WriteString(" " + c.args[i].(string) + " ")
+		}
+		return buffer.String()
 	}
 	return c.name
 }
-
-/*
-func unpack(args ...interface{}) string {
-	var buffer bytes.Buffer
-	for _, v := range args {
-		buffer.WriteString(" " + v.(string) + " ")
-	}
-	return buffer.String()
-}
-*/
 
 // Pings the give address to check if it's live
 func PING(address string) *Command {

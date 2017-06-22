@@ -1,4 +1,4 @@
-package network
+package httpd
 
 import (
 	"log"
@@ -20,6 +20,9 @@ func StartHTTPServer() error {
 	http.HandleFunc("/join", func(writer http.ResponseWriter, req *http.Request) {
 		cluster.Join(writer, req)
 	})
-	logger.Println("Starting HTTP server on", ADDR)
+	http.HandleFunc("/init", func(writer http.ResponseWriter, req *http.Request) {
+		cluster.Init(writer, req)
+	})
+	logger.Println("Running HTTP server on", ADDR)
 	return http.ListenAndServe(ADDR, nil)
 }

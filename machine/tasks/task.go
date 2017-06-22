@@ -5,7 +5,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/younisshah/jakob/network"
+	"time"
+
+	"github.com/garyburd/redigo/redis"
 )
 
 /**
@@ -19,7 +21,7 @@ func Sync(args ...string) error {
 	cmdName := args[1]
 	cmdArgs := pack(strings.Fields(args[2]))
 
-	client, err := network.GetRedisConn(peer)
+	client, err := GetRedisConn(peer)
 	if err != nil {
 		return err
 	}
@@ -31,11 +33,21 @@ func Sync(args ...string) error {
 	return nil
 }
 
-
 func pack(args []string) []interface{} {
 	a := make([]interface{}, len(args))
 	for k, v := range args {
 		a[k] = v
 	}
 	return a
+}
+
+const (
+	TILE38_REDIS_IDLE_TIMEOUT = time.Duration(5) * time.Second
+	TILE38_REDIS_NETWORK      = "tcp"
+)
+
+// GetRedisConn returns a raw redis connection
+func GetRedisConn(address string) (redis.Conn, error) {
+	dialOption := redis.DialConnectTimeout(TILE38_REDIS_IDLE_TIMEOUT)
+	return redis.Dial(TILE38_REDIS_NETWORK, address, dialOption)
 }

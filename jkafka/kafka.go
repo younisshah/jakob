@@ -3,10 +3,9 @@ package jkafka
 import (
 	"log"
 	"os"
-
-	"os/signal"
-
+	"strings"
 	"github.com/Shopify/sarama"
+	"github.com/younisshah/jakob/replicate"
 )
 
 /**
@@ -25,7 +24,7 @@ var (
 
 // Consume consumes from a Kafka topic
 // Use this to sync commands to a new getter peer
-func Consume() error {
+func Consume(peer string) error {
 
 	consumer, err := sarama.NewConsumer(hosts, nil)
 
@@ -55,26 +54,28 @@ func Consume() error {
 		}
 	}()
 
-	shutdown := make(chan os.Signal, 1)
-	signal.Notify(shutdown, os.Interrupt)
-	done := make(chan bool)
-
-	go func() {
-		for {
-			select {
-			case err := <-partitionConsumer.Errors():
-				logger.Println("error while consuming ", err)
-			case cmd := <-partitionConsumer.Messages():
-				logger.Printf("rcvd >> cmd: %s", string(cmd.Value))
-			case <-shutdown:
-				logger.Println("kafka consumer shutdown triggered")
-				done <- true
+	var i int64
+	messages := make(map[string][]interface{})
+DONE:
+	for {
+		select {
+		case msg := <-partitionConsumer.Messages():
+			value := string(msg.Value)
+			tokens := strings.Fields(value)
+			cmdName := tokens[0]
+			args := pack(tokens[1:])
+			messages[cmdName] = args
+			i = i + 1
+			if i == partitionConsumer.HighWaterMarkOffset() {
+				break DONE
 			}
 		}
-	}()
-	<-done
+	}
+
+	err = replicate.Replicate(peer, messages)
+
 	logger.Println("Exit.")
-	return nil
+	return err
 }
 
 // Produce produces the cmd to a kafka topic
@@ -111,4 +112,12 @@ func getConfig() *sarama.Config {
 	config.Producer.Retry.Max = 5
 	config.ClientID = _KAFKA_CLIENT_ID
 	return config
+}
+
+func pack(s []string) []interface{} {
+	args := make([]interface{}, len(s))
+	for i := range s {
+		args[i] = s[i]
+	}
+	return args
 }

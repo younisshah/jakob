@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/RichardKnop/machinery/v1/tasks"
-	"github.com/younisshah/jakob/core/task-server"
 	"github.com/younisshah/jakob/jfs"
+	"github.com/younisshah/jakob/machine/task-server"
 )
 
 /**
@@ -19,13 +19,14 @@ import (
 
 var logger = log.New(os.Stderr, "[jakob-sender] ", log.LstdFlags)
 
-func Sender(cmdName string, args interface{}) {
+func Send(cmdName string, args interface{}) {
 
 	server, err := task_server.StartTaskServer()
 	if err != nil {
 		logger.Println("couldn't start machinery server", err)
 		return
 	}
+	logger.Println(server.GetBackend())
 
 	jyml := jfs.NewJYaml()
 	jyml.Type = jfs.GETTER
