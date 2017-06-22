@@ -1,6 +1,3 @@
-// Package core deal with setting up redis client, parsing incoming T38 commands,
-// executing commands and returning the resp and error and handling joining of new
-// setter + getter peer and beanstalkd services
 package command
 
 import (
