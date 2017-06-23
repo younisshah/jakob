@@ -46,6 +46,14 @@ Boot jakob:
 boot.Up()
 ```
 
+Initialize the cluster, use `/init`
+
+`curl -X POST localhost:30000/init -d '{"setter":"localhost:9000", "getter":"localhost:9001"}'`
+
+To join a cluster, use `/join`
+ 
+`curl -X POST localhost:30000/join -d '{"setter":"localhost:9002", "getter":"localhost:9003"}'` 
+
 To get a setter peer from the cluster
 
 ```go
