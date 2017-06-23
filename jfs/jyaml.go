@@ -17,10 +17,16 @@ import (
 const (
 	SETTER Peer = iota
 	GETTER
-	_base = "/jring/"
+	_base = "/peers/"
 )
 
 type Peer int
+
+func init() {
+	if err := os.Mkdir(filepath.Join(pwd, "/peers"), 0777); err != nil {
+		panic(err)
+	}
+}
 
 var (
 	pwd, _         = os.Getwd()

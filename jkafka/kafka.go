@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strings"
+
 	"github.com/Shopify/sarama"
 	"github.com/younisshah/jakob/replicate"
 )
@@ -55,7 +56,7 @@ func Consume(peer string) error {
 	}()
 
 	var i int64
-	messages := make(map[string][]interface{})
+	messages := make(map[int64]map[string][]interface{})
 DONE:
 	for {
 		select {
@@ -64,7 +65,8 @@ DONE:
 			tokens := strings.Fields(value)
 			cmdName := tokens[0]
 			args := pack(tokens[1:])
-			messages[cmdName] = args
+			cmd := map[string][]interface{}{cmdName: args}
+			messages[i] = cmd
 			i = i + 1
 			if i == partitionConsumer.HighWaterMarkOffset() {
 				break DONE

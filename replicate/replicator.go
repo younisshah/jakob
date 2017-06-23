@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/younisshah/jakob/redisd"
+	"reflect"
 )
 
 /**
@@ -13,7 +14,7 @@ import (
 
 var rlogger = log.New(os.Stderr, "[jakob-cluster-replicator] ", log.LstdFlags)
 
-func Replicate(peer string, cmds map[string][]interface{}) error {
+func Replicate(peer string, cmds map[int64]map[string][]interface{}) error {
 	rlogger.Println("replicating")
 	rlogger.Println(" - PEER", peer)
 	rlogger.Println(" - CMDs", cmds)
@@ -28,8 +29,9 @@ func Replicate(peer string, cmds map[string][]interface{}) error {
 		rlogger.Println("couldn't connect get Redis connection for peer: ", peer)
 		return err
 	}
-	for k, v := range cmds {
-		if err := conn.Send(k, v...); err != nil {
+	for _, v := range cmds {
+		cmdName := reflect.ValueOf(v).MapKeys()[0].String()
+		if err := conn.Send(cmdName, v[cmdName]...); err != nil {
 			rlogger.Println("error while sending command ", err)
 		}
 	}

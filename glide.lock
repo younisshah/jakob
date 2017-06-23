@@ -1,12 +1,6 @@
-hash: e5ced76a5cb73405bfebc5174cd8fdc2c90c1f8075511e821dd6656343883890
-updated: 2017-06-21T14:38:58.735338147+05:30
+hash: 45af2abf03f836a426f3e39ef35ed832adbb4eaba76df9062d8c1387536b6a0a
+updated: 2017-06-23T14:34:24.594045466+05:30
 imports:
-- name: github.com/alecthomas/template
-  version: a0175ee3bccc567396460bf5acd36800cb10c49c
-  subpackages:
-  - parse
-- name: github.com/alecthomas/units
-  version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
 - name: github.com/bradfitz/gomemcache
   version: 1952afaa557dc08e8e0d89eafab110fb501c1a2b
   subpackages:
@@ -30,12 +24,8 @@ imports:
   - redis
 - name: github.com/golang/snappy
   version: 553a641470496b2327abcac10b36396bd98e45c9
-- name: github.com/iwanbk/gobeanstalk
-  version: 36dcad26a9619327621b6f95745d462c4b12dcec
 - name: github.com/kelseyhightower/envconfig
   version: 70f0258d44cbaa3b6a2581d82f58da01a38e4de4
-- name: github.com/mikespook/gearman-go
-  version: 14f4df8ede0150c51852c14fad816d93102d3175
 - name: github.com/pierrec/lz4
   version: 5a3d2245f97fc249850e7802e3c01fad02a1c316
 - name: github.com/pierrec/xxHash
