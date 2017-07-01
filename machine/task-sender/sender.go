@@ -8,6 +8,8 @@ import (
 	"bytes"
 	"strings"
 
+	"fmt"
+
 	"github.com/RichardKnop/machinery/v1/tasks"
 	"github.com/younisshah/jakob/jfs"
 	"github.com/younisshah/jakob/machine/task-server"
@@ -85,7 +87,7 @@ func stringify(args interface{}) string {
 	a := args.([]interface{})
 	var buffer bytes.Buffer
 	for _, v := range a {
-		buffer.WriteString(" " + v.(string) + " ")
+		buffer.WriteString(" " + fmt.Sprint(v) + " ")
 	}
 	return strings.TrimSpace(buffer.String())
 }

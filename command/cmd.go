@@ -7,6 +7,8 @@ import (
 
 	"bytes"
 
+	"fmt"
+
 	"github.com/younisshah/jakob/jkafka"
 	"github.com/younisshah/jakob/machine/task-sender"
 	"github.com/younisshah/jakob/redisd"
@@ -73,7 +75,7 @@ func (c *Command) String() string {
 	buffer.WriteString(c.name)
 	if len(c.args) > 0 {
 		for i := range c.args {
-			buffer.WriteString(" " + c.args[i].(string) + " ")
+			buffer.WriteString(" " + fmt.Sprint(c.args[i]) + " ")
 		}
 		return buffer.String()
 	}
