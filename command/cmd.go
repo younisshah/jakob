@@ -51,7 +51,7 @@ func (c *Command) Execute() {
 	resp, err := conn.Do(c.name, c.args...)
 	c.Error = err
 	c.Result = resp
-	if err == nil && (c.name != "GET" && c.name != "PING") {
+	if err == nil && (c.name != "GET" && c.name != "PING" && c.name != "NEARBY") {
 		cmd := c.String()
 		logger.Println("producing to kafka")
 		logger.Println(" - COMMAND:", cmd)
