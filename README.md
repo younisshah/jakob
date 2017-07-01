@@ -58,7 +58,7 @@ To get a setter peer from the cluster
 
 ```go
 ring := jring.New(jfs.SETTER)
-peer, err := jr.Get("some_id")
+peer, err := ring.Get("some_id")
 if err != nil {
     log.Println(err)
 }
@@ -68,7 +68,7 @@ To get getter peer from the cluster
 
 ```go
 ring := jring.New(jfs.GETTER)
-peer, err := jr.Get("some_id")
+peer, err := ring.Get("some_id")
 if err != nil {
     log.Println(err)
 }
