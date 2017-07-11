@@ -99,6 +99,7 @@ c.PipelinedExecute()
 if c.Error != nil {
     // Handle error
 }
+// do something with c.Result
 ```
 
 ---
