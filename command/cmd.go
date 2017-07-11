@@ -107,7 +107,7 @@ func (c *Command) PipelinedExecute() {
 		}
 		c.Error = result.ErrorOrNil()
 		c.Result = resp
-		if c.Error != nil {
+		if c.Error == nil {
 			for i := range c.pipelineCmdName {
 				i = i
 				go func() {
@@ -134,6 +134,8 @@ func (c *Command) PipelinedExecute() {
 					}
 				}()
 			}
+		} else {
+			logger.Println("couldn't produce to kafka", c.Error)
 		}
 	}
 }
