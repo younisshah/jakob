@@ -1,12 +1,18 @@
-hash: 45af2abf03f836a426f3e39ef35ed832adbb4eaba76df9062d8c1387536b6a0a
-updated: 2017-06-23T14:34:24.594045466+05:30
+hash: 3b5e65cacf6f4d4fd5dcfbe8103c397fec76d5deb6e544e0bfa42af5cfdc8e8e
+updated: 2017-07-11T11:38:07.296656375+05:30
 imports:
+- name: github.com/alecthomas/template
+  version: a0175ee3bccc567396460bf5acd36800cb10c49c
+  subpackages:
+  - parse
+- name: github.com/alecthomas/units
+  version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
 - name: github.com/bradfitz/gomemcache
   version: 1952afaa557dc08e8e0d89eafab110fb501c1a2b
   subpackages:
   - memcache
 - name: github.com/davecgh/go-spew
-  version: 346938d642f2ec3594ed81d874461961cd0faa76
+  version: 782f4967f2dc4564575ca782fe2d04090b5faca8
   subpackages:
   - spew
 - name: github.com/eapache/go-resiliency
@@ -24,6 +30,8 @@ imports:
   - redis
 - name: github.com/golang/snappy
   version: 553a641470496b2327abcac10b36396bd98e45c9
+- name: github.com/hashicorp/go-multierror
+  version: 83588e72410abfbe4df460eeb6f30841ae47d4c4
 - name: github.com/kelseyhightower/envconfig
   version: 70f0258d44cbaa3b6a2581d82f58da01a38e4de4
 - name: github.com/pierrec/lz4
@@ -37,7 +45,7 @@ imports:
 - name: github.com/RichardKnop/logging
   version: 8692ae85bb7c50aadb496ffd6fb58a76300eaab1
 - name: github.com/RichardKnop/machinery
-  version: 18c9573c847e688a94d35ceafad349add6808d45
+  version: bd86a68186b16010b67f8e9377ee2fd6a2927a7a
   subpackages:
   - v1
   - v1/backends
@@ -56,7 +64,7 @@ imports:
 - name: github.com/tidwall/gjson
   version: c784c417818f59d6597274642d8ac1d09efc9b01
 - name: golang.org/x/net
-  version: 057a25b06247e0c51ba15d8ae475feb2fcb72164
+  version: 054b33e6527139ad5b1ec2f6232c3b175bd9a30c
   subpackages:
   - context
 - name: golang.org/x/sync

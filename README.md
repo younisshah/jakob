@@ -86,6 +86,20 @@ if cmd.Error != nil {
 }
 ```
 
+Pipelined SET
+
+```go
+cmds := []string{"SET", "SET"}
+a1 := []interface{}{"fleet", "home", "POINT", "12.2", "32.56"}
+a2 := []interface{}{"fleet", "office", "POINT", "20.2", "52.56"}
+args := []interface{}{a1, a2}
+c := command.NewPipelinedCommand("localhost:9851", cmds, args)
+c.PipelinedExecute()
+if c.Error != nil {
+    // do something with c.Result
+}
+```
+
 ---
 
 **Jakob is still in infancy which means API is subject change.**
