@@ -84,6 +84,7 @@ if cmd.Error != nil {
 } else {
     log.Println(cmd.Result)
 }
+// Do something with c.Result
 ```
 
 Pipelined SET
@@ -96,7 +97,7 @@ args := []interface{}{a1, a2}
 c := command.NewPipelinedCommand("localhost:9851", cmds, args)
 c.PipelinedExecute()
 if c.Error != nil {
-    // do something with c.Result
+    // Handle error
 }
 ```
 
