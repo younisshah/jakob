@@ -109,8 +109,7 @@ func (c *Command) PipelinedExecute() {
 		c.Result = resp
 		if c.Error == nil {
 			for i := range c.pipelineCmdName {
-				i = i
-				go func() {
+				go func(i int) {
 					if c.pipelineCmdName[i] != "GET" && c.pipelineCmdName[i] != "PING" && c.pipelineCmdName[i] != "NEARBY" {
 						var cmd string
 						cmd = c.pipelineCmdName[i]
@@ -132,7 +131,7 @@ func (c *Command) PipelinedExecute() {
 							logger.Println("Err", c.Error)
 						}
 					}
-				}()
+				}(i)
 			}
 		} else {
 			logger.Println("couldn't produce to kafka", c.Error)
