@@ -18,7 +18,7 @@ import (
 var logger = log.New(os.Stderr, "[jakob-health-check] ", log.LstdFlags)
 
 func Check() {
-	ticker := time.NewTicker(time.Duration(10) * time.Second)
+	ticker := time.NewTicker(time.Duration(10) * time.Minute)
 	for {
 		select {
 		case <-ticker.C:
