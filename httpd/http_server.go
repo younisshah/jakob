@@ -8,10 +8,6 @@ import (
 	"github.com/younisshah/jakob/cluster"
 )
 
-/**
-*  Created by Galileo on 21/6/17.
- */
-
 const ADDR = "localhost:30000"
 
 var logger = log.New(os.Stderr, "[jakob-http-server] ", log.LstdFlags)

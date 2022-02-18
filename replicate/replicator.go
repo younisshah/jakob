@@ -8,10 +8,6 @@ import (
 	"reflect"
 )
 
-/**
-*  Created by Galileo on 22/6/17.
- */
-
 var rlogger = log.New(os.Stderr, "[jakob-cluster-replicator] ", log.LstdFlags)
 
 func Replicate(peer string, cmds map[int64]map[string][]interface{}) error {

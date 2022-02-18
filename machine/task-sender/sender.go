@@ -15,11 +15,9 @@ import (
 	"github.com/younisshah/jakob/machine/task-server"
 )
 
-/**
-*  Created by Galileo on 20/6/17.
- */
-
 var logger = log.New(os.Stderr, "[jakob-sender] ", log.LstdFlags)
+
+const CONCURRENCY = 2
 
 func Send(cmdName string, args interface{}) {
 
@@ -47,9 +45,9 @@ func Send(cmdName string, args interface{}) {
 		jTasks[i] = getTask(peers[i], cmdName, stringify(args))
 	}
 
-	group := tasks.NewGroup(jTasks...)
+	group, _ := tasks.NewGroup(jTasks...)
 
-	asyncResults, err := server.SendGroup(group)
+	asyncResults, err := server.SendGroup(group, CONCURRENCY)
 	if err != nil {
 		logger.Println("server send an error while executing task group", err)
 		return

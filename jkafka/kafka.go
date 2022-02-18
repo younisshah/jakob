@@ -9,10 +9,6 @@ import (
 	"github.com/younisshah/jakob/replicate"
 )
 
-/**
-*  Created by Galileo on 21/6/17.
- */
-
 const (
 	_KAFKA_TOPIC     = "jakob_topic"
 	_KAFKA_CLIENT_ID = "jakob_client"

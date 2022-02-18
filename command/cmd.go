@@ -1,6 +1,7 @@
 package command
 
 import (
+	"github.com/hashicorp/go-multierror"
 	"log"
 
 	"os"
@@ -9,15 +10,10 @@ import (
 
 	"fmt"
 
-	"github.com/hashicorp/go-multierror"
 	"github.com/younisshah/jakob/jkafka"
 	"github.com/younisshah/jakob/machine/task-sender"
 	"github.com/younisshah/jakob/redisd"
 )
-
-/**
-*  Created by Galileo on 18/6/17.
- */
 
 // Command represents the T38 server (obtained from hash ring)
 // on which the command (Name and Args) is to be executed

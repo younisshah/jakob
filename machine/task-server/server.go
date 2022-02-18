@@ -6,10 +6,6 @@ import (
 	"github.com/younisshah/jakob/machine/tasks"
 )
 
-/**
-*  Created by Galileo on 20/6/17.
- */
-
 // StartTaskServer gets a new machinery Server
 func StartTaskServer() (server *machinery.Server, err error) {
 	server, err = machinery.NewServer(LoadInMemConfig())
@@ -22,5 +18,6 @@ func StartTaskServer() (server *machinery.Server, err error) {
 
 // TODO - get path from kingpin
 func loadConfig() *config.Config {
-	return config.NewFromYaml("./config.yml", true, true)
+	cfg, _ := config.NewFromYaml("./config.yml", true)
+	return cfg
 }

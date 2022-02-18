@@ -14,10 +14,6 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-/**
-*  Created by Galileo on 18/6/17.
- */
-
 var logger = log.New(os.Stderr, "[jakob-http-server] ", log.LstdFlags)
 
 func Init(writer http.ResponseWriter, req *http.Request) {

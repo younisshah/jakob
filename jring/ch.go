@@ -5,10 +5,6 @@ import (
 	"stathat.com/c/consistent"
 )
 
-/**
-*  Created by Galileo on 17/6/17.
- */
-
 type jRing struct {
 	pType jfs.Peer
 }

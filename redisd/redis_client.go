@@ -9,10 +9,6 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
-/**
-*  Created by Galileo on 2/5/17.
- */
-
 const (
 	TILE38_REDIS_IDLE_TIMEOUT = time.Duration(5) * time.Second
 	TILE38_REDIS_NETWORK      = "tcp"

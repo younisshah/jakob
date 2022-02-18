@@ -4,10 +4,6 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-/**
-*  Created by Galileo on 18/6/17.
- */
-
 // PeerType is the common interface implemented by SetterPeers and GetterPeers
 type PeerType interface {
 	// YAMLString returns the peers as YAML string

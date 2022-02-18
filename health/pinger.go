@@ -11,10 +11,6 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-/**
-*  Created by Galileo on 22/6/17.
- */
-
 var logger = log.New(os.Stderr, "[jakob-health-check] ", log.LstdFlags)
 
 func Check() {

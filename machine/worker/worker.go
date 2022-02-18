@@ -7,9 +7,7 @@ import (
 	"github.com/younisshah/jakob/machine/task-server"
 )
 
-/**
-*  Created by Galileo on 20/6/17.
- */
+const CONCURRENCY = 2
 
 var logger = log.New(os.Stderr, "[jakob-worker] ", log.LstdFlags)
 
@@ -22,7 +20,7 @@ func Worker() error {
 		return err
 	}
 
-	w := server.NewWorker("jakob_worker")
+	w := server.NewWorker("jakob_worker", CONCURRENCY)
 
 	return w.Launch()
 }
